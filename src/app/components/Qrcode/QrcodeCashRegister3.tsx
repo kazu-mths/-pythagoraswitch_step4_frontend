@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import QrcodeReader from './QrcodeReader';
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface Product {
     product_id: number;
@@ -25,12 +26,13 @@ export default function QrcodeReaderComponent() {
     const [userName, setUserName] = useState('');
     const [token, setToken] = useState('');
     const user_token: string | null = useSearchParams().get("token");
+    const router = useRouter();
 
 
     async function fetchUser(token: string) {
         const res = await fetch(`https://tech0-gen-5-step4-studentwebapp-1.azurewebsites.net/shopping?token=${user_token}`, { cache: "no-cache" });
         if (!res.ok) {
-            throw new Error('Failed to fetch user');
+            router.push(`/`);
         }
         return res.json();
     }
